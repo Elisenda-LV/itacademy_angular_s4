@@ -4,38 +4,39 @@ headers: {
   }
 }
 
-interface ReportData {//la interface defineix l'estructura de dades que esperem rebre.
-  joke: string;
-}
 
 const newJoke = document.getElementById("card-joke")as HTMLElement; //mostra l'acudit nou
 let currentJoke: string = ""; //variable global per guardar el joke actual.
 
 
-function showJoke(): Promise<ReportData> { //especifica quin tipus de dades obtindrà la promesa, és per això que l'hem declarat a interface.
-  return fetch("https://icanhazdadjoke.com/", options) //afegim options xq fa referencia al header. 
-    .then(res => res.json())
-    .then((data: ReportData) => {
-      console.log(data);
-      currentJoke = data.joke; //afegim el joke actual per dsp fer scoring. 
-      return data; 
-    })
-    .then()
-    .catch((error) => {
-      console.error("Error:", error);
-      throw error;
-    });
+// Funció per generar random jokes:
+
+function randomJokes(): Promise<ReportData | NorrisData> {
+  const randomApi = Math.random() < 0.5 ? showJoke : showNorris; //random per escollir funció joke si dad o norris, depen de si és més gran o no de 0,50.
+
+  return randomApi();
 }
 
 
+// Button següent acudit:
+
 async function nextJoke(){  //async/await x retornar promesa.
   try {
-    const joke = await showJoke();
+    const joke = await randomJokes();
     if (newJoke) {
-      newJoke.innerHTML = joke.joke;
-      currentJoke = joke.joke
+       //if per adaptar interface ja que la de norris i dadjoke és diferent.
+      let jokeText;
+      if ("joke" in joke) {
+        jokeText = joke.joke; // Si es de la API de chistes de papá
+      } else if ("value" in joke) {
+        jokeText = joke.value; // Si es de la API de Chuck Norris
+      } else {
+        jokeText = "Unknown joke format";
+      }
+      newJoke.innerHTML = jokeText;
+      currentJoke = jokeText;
     }
-  } catch (error) { //catch gestió dels errors.
+    }catch (error) { //catch gestió dels errors.
     if (newJoke) {
       newJoke.innerHTML = "Ups, try again!";
       console.error("Error:", error);
@@ -44,11 +45,24 @@ async function nextJoke(){  //async/await x retornar promesa.
   }
 }
 
+
+// Joke d'inici
+
 document.addEventListener("DOMContentLoaded", () => { //afegim el listener xq quan detecti que es carregui web ja mostri un acudit.
-  showJoke()
+  randomJokes()
     .then((joke) => {
       if (newJoke) {
-        newJoke.innerHTML = joke.joke;
+        //if per adaptar interface ja que la de norris i dadjoke és diferent.
+        let jokeText;
+      if ("joke" in joke) {
+        jokeText = joke.joke; // Si es de la API dadjokes
+      } else if ("value" in joke) {
+        jokeText = joke.value; // Si es de la API Norris
+      } else {
+        jokeText = "Unknown joke format";
+      }
+      newJoke.innerHTML = jokeText;
+      currentJoke = jokeText;
       }
     })
     .catch((error) => {
@@ -59,23 +73,24 @@ document.addEventListener("DOMContentLoaded", () => { //afegim el listener xq qu
     });
 });
 
-// score
 
-  async function addScore(inputId: string){
-    const input = document.getElementById(inputId) as HTMLInputElement;
+// Scoring dels jokes.
+
+async function addScore(inputId: string){
+  const input = document.getElementById(inputId) as HTMLInputElement;
   
-    if (input) {
-      const todayDate = new Date().toISOString();
-      const valorInput = input.value;
+  if (input) {
+    const todayDate = new Date().toISOString();
+    const valorInput = input.value;
       
-      const reportAcudits = {
-        joke: {
-          joke: currentJoke,
-        },
-        score: valorInput,
-        date: todayDate,
-      };
+    const reportAcudits = {
+      joke: {
+        joke: currentJoke,
+      },
+      score: valorInput,
+      date: todayDate,
+    };
   
       console.log("Report Data:", reportAcudits);
-    }
   }
+}

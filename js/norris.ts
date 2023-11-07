@@ -1,13 +1,14 @@
 interface NorrisData {
-    joke: string;
+    value: string;
 }
 
 function showNorris(){
     return fetch ('https://api.chucknorris.io/jokes/random',options)
     .then(res => res.json())
-    .then((data: NorrisData) => {
+    .then((data: {value: string}) => {
         console.log(data);
-        return data; 
+        currentJoke = data.value;
+        return {joke: data.value}; //adaptem a estructura dades joke!! Evitem l'undefined.
       })
       .then()
       .catch((error) => {

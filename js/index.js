@@ -14,28 +14,31 @@ const options = {
     }
 };
 const newJoke = document.getElementById("card-joke"); //mostra l'acudit nou
-let currentJoke = ""; //array per guardar el joke actual.
-function showJoke() {
-    return fetch("https://icanhazdadjoke.com/", options) //afegim options xq fa referencia al header. 
-        .then(res => res.json())
-        .then((data) => {
-        console.log(data);
-        currentJoke = data.joke;
-        return data;
-    })
-        .then()
-        .catch((error) => {
-        console.error("Error:", error);
-        throw error;
-    });
+let currentJoke = ""; //variable global per guardar el joke actual.
+// Funció per generar random jokes:
+function randomJokes() {
+    const randomApi = Math.random() < 0.5 ? showJoke : showNorris; //random per escollir funció joke si dad o norris, depen de si és més gran o no de 0,50.
+    return randomApi();
 }
+// Button següent acudit:
 function nextJoke() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const joke = yield showJoke();
+            const joke = yield randomJokes();
             if (newJoke) {
-                newJoke.innerHTML = joke.joke;
-                currentJoke = joke.joke;
+                //if per adaptar interface ja que la de norris i dadjoke és diferent.
+                let jokeText;
+                if ("joke" in joke) {
+                    jokeText = joke.joke; // Si es de la API de chistes de papá
+                }
+                else if ("value" in joke) {
+                    jokeText = joke.value; // Si es de la API de Chuck Norris
+                }
+                else {
+                    jokeText = "Unknown joke format";
+                }
+                newJoke.innerHTML = jokeText;
+                currentJoke = jokeText;
             }
         }
         catch (error) { //catch gestió dels errors.
@@ -47,11 +50,24 @@ function nextJoke() {
         }
     });
 }
+// Joke d'inici
 document.addEventListener("DOMContentLoaded", () => {
-    showJoke()
+    randomJokes()
         .then((joke) => {
         if (newJoke) {
-            newJoke.innerHTML = joke.joke;
+            //if per adaptar interface ja que la de norris i dadjoke és diferent.
+            let jokeText;
+            if ("joke" in joke) {
+                jokeText = joke.joke; // Si es de la API dadjokes
+            }
+            else if ("value" in joke) {
+                jokeText = joke.value; // Si es de la API Norris
+            }
+            else {
+                jokeText = "Unknown joke format";
+            }
+            newJoke.innerHTML = jokeText;
+            currentJoke = jokeText;
         }
     })
         .catch((error) => {
@@ -61,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-// score
+// Scoring dels jokes.
 function addScore(inputId) {
     return __awaiter(this, void 0, void 0, function* () {
         const input = document.getElementById(inputId);

@@ -4,7 +4,8 @@ function showNorris() {
         .then(res => res.json())
         .then((data) => {
         console.log(data);
-        return data;
+        currentJoke = data.value;
+        return { joke: data.value }; //adaptem a estructura dades joke!! Evitem l'undefined.
     })
         .then()
         .catch((error) => {
