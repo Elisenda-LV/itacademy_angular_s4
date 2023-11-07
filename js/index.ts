@@ -4,20 +4,23 @@ headers: {
   }
 }
 
-interface JokeRes {
+interface ReportData {//la interface defineix l'estructura de dades que esperem rebre.
   joke: string;
 }
 
 const newJoke = document.getElementById("card-joke")as HTMLElement; //mostra l'acudit nou
+let currentJoke: string = ""; //variable global per guardar el joke actual.
 
 
-function showJoke(): Promise<JokeRes> { //especifica quin tipus de dades obtindrà la promesa, és per això que l'hem declarat a interface.
+function showJoke(): Promise<ReportData> { //especifica quin tipus de dades obtindrà la promesa, és per això que l'hem declarat a interface.
   return fetch("https://icanhazdadjoke.com/", options) //afegim options xq fa referencia al header. 
     .then(res => res.json())
-    .then((data: JokeRes) => {
+    .then((data: ReportData) => {
       console.log(data);
+      currentJoke = data.joke; //afegim el joke actual per dsp fer scoring. 
       return data; 
     })
+    .then()
     .catch((error) => {
       console.error("Error:", error);
       throw error;
@@ -30,6 +33,7 @@ async function nextJoke(){  //async/await x retornar promesa.
     const joke = await showJoke();
     if (newJoke) {
       newJoke.innerHTML = joke.joke;
+      currentJoke = joke.joke
     }
   } catch (error) { //catch gestió dels errors.
     if (newJoke) {
@@ -55,5 +59,23 @@ document.addEventListener("DOMContentLoaded", () => { //afegim el listener xq qu
     });
 });
 
+// score
 
- 
+  async function addScore(inputId: string){
+    const input = document.getElementById(inputId) as HTMLInputElement;
+  
+    if (input) {
+      const todayDate = new Date().toISOString();
+      const valorInput = input.value;
+      
+      const reportAcudits = {
+        joke: {
+          joke: currentJoke,
+        },
+        score: valorInput,
+        date: todayDate,
+      };
+  
+      console.log("Report Data:", reportAcudits);
+    }
+  }
