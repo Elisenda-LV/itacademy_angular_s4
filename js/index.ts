@@ -4,19 +4,17 @@ headers: {
   }
 }
 
-
 const newJoke = document.getElementById("card-joke")as HTMLElement; //mostra l'acudit nou
 let currentJoke: string = ""; //variable global per guardar el joke actual.
-
 
 // Funció per generar random jokes:
 
 function randomJokes(): Promise<ReportData | NorrisData> {
   const randomApi = Math.random() < 0.5 ? showJoke : showNorris; //random per escollir funció joke si dad o norris, depen de si és més gran o no de 0,50.
-
+  //svgRandom()
   return randomApi();
-}
 
+}
 
 // Button següent acudit:
 
@@ -43,6 +41,7 @@ async function nextJoke(){  //async/await x retornar promesa.
       throw error;
     }
   }
+  svgRandom()
 }
 
 

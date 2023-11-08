@@ -18,6 +18,7 @@ let currentJoke = ""; //variable global per guardar el joke actual.
 // Funció per generar random jokes:
 function randomJokes() {
     const randomApi = Math.random() < 0.5 ? showJoke : showNorris; //random per escollir funció joke si dad o norris, depen de si és més gran o no de 0,50.
+    //svgRandom()
     return randomApi();
 }
 // Button següent acudit:
@@ -48,6 +49,7 @@ function nextJoke() {
                 throw error;
             }
         }
+        svgRandom();
     });
 }
 // Joke d'inici

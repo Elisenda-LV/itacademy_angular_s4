@@ -1,40 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/styles.css">
     <title>Jokes</title>
 </head>
+
 <body>
     <header class="container mt-3">
-        <div class="pt-3">
-            <p class="fw-bold" id="weather"></p>
+        <div class="row weather ">
+            <div class="col-2 weather-icon d-flex align-items-center justify-content-end" id="weather-icon"></div>
+            <div class="col-2 fw-bold d-flex align-items-center justify-content-start" id="weather"></div>
+            <div class="col-8"></div>
         </div>
     </header>
-    <main class="container">
-        <div class="row justify-content-center m-3">
-        <div class="col-12 card text-center m-5 p-5" style="width: 35rem;">
-            <div class="card-body p-3">
-              <h5 class="card-title">Preparat per riure?</h5>
-              <p class="card-text pt-3 pb-2" id="card-joke"></p>
-              <div class="pb-4">
-                <input class="btn btn-outline-primary" type="submit" value="1" id="i1" onclick="addScore('i1')"></input>
-                <input class="btn btn-outline-primary" type="submit" value="2" id="i2" onclick="addScore('i2')"></input>
-                <input class="btn btn-outline-primary" type="submit" value="3" id="i3" onclick="addScore('i3')"></input>
-              </div>
-              <button class="btn btn-primary" type="submit" id="next-joke" onclick="nextJoke()">Següent acudit</button>
+   
+    <main class="container containerSvg">
+        <div class="row justify-content-center position-relative">
+            <div class="forma position-absolute" id="taca">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#8A3FFC"
+                        d="M47.9,-56.5C64,-43.5,80.6,-30.3,81.8,-15.6C83,-0.9,68.8,15.3,57,30.3C45.2,45.2,35.8,58.9,21.9,66.8C8,74.8,-10.4,77,-28.2,72.6C-46,68.2,-63.2,57.3,-69.9,42.1C-76.7,26.9,-73,7.3,-68.6,-11.2C-64.3,-29.7,-59.3,-47.2,-47.7,-61.1C-36.2,-74.9,-18.1,-85.1,-1.1,-83.8C15.8,-82.4,31.7,-69.5,47.9,-56.5Z"
+                        transform="translate(100 100)" />
+                </svg>
+            </div>
+            <div class="col-12 card text-center border-0  m-5 p-5 bg-transparent" style="width: 35rem;" id="containersvg">
+                <div class="card-body p-3 pt-5">
+                    <h3 class="card-title text-white">Vols riure?</h3>
+                    <p class="card-text text-white fs-6 pt-3 pb-2" id="card-joke"></p>
+                    <div class="pb-4">
+                        <button class="btn btn-outline-primary" type="submit" value="1" id="i1"  onclick="addScore('i1')">
+                            <i class="fa-solid fa-face-sad-tear fa-3x" style="color: rgb(255, 255, 0);" id="face"></i>
+                        </button>
+                        <button class="btn btn-outline-primary" type="submit" value="2" id="i2" onclick="addScore('i2')">
+                            <i class="fa-solid fa-face-meh fa-3x" style="color: rgb(255, 255, 0);" id="face"></i>
+                        </button>
+                        <button class="btn btn-outline-primary" type="submit" value="3" id="i3"  onclick="addScore('i3')">
+                           <i class="fa-solid fa-face-smile fa-3x" style="color:  rgb(255, 255, 0);" id="face"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary btn-lg" type="submit" id="next-joke" onclick="nextJoke()">Següent acudit</button>
+                </div>
             </div>
         </div>
-        </div>
     </main>
-    
+
     <!-- ----- JS ------ -->
     <script src="./js/index.js"></script>
     <script src="./js/weather.js"></script>
     <script src="./js/norris.js"></script>
     <script src="./js/dadjoke.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="./js/svgs.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/9fc3d6d39c.js" crossorigin="anonymous"></script>
 </body>
+
 </html>
